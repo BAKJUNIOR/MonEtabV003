@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Students page</title>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+    <div class="main-content container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-4 order-md-1 order-last">
+                    <h3 th:text="${student.id == null} ? 'Ajouter un éleve' : 'Modier un éleve'"></h3>>
+                    <p class="text-subtitle text-muted">  Remplissez les informations ci-dessous pour ajouter un nouvel élève. Veuillez vérifier toutes les données avant de les soumettre.</p>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/students}">
+                                    <i data-feather="arrow-left" width="80" th:alt="retour"></i>
+                                </a>
+                            </li>
+                        </ol>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Ajouter un éleve</h4>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="card-body">
+
+
+                                <form th:action="@{/students/student}"
+                                      th:object="${student}" method="post">
+                                    <div class="row">
+                                        <!-- Champ pour le prénom -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="prenom">Prénom</label>
+                                                <input type="text" id="prenom" class="form-control" th:field="*{prenom}" placeholder="Prénom">
+                                                <div th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour le nom -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="nom">Nom</label>
+                                                <input type="text" id="nom" class="form-control" th:field="*{nom}" placeholder="Nom">
+                                                <div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Boutons pour le choix du genre -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label>Genre</label>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="custom-control custom-radio mr-4">
+                                                        <input type="radio" id="homme" th:field="*{genre}" class="custom-control-input" value="Homme">
+                                                        <label class="custom-control-label" for="homme">Homme</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio ml-5">
+                                                        <input type="radio" id="femme" th:field="*{genre}" class="custom-control-input" value="Femme">
+                                                        <label class="custom-control-label" for="femme">Femme</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour la street -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="street">street</label>
+                                                <input type="text" id="street" class="form-control" th:field="*{adress.street}" placeholder="street">
+                                                <div th:if="${#fields.hasErrors('adress.street')}" th:errors="*{adress.street}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour la compagny -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="compagny">compagny</label>
+                                                <input type="text" id="compagny" class="form-control" th:field="*{adress.compagny}" placeholder="compagny">
+                                                <div th:if="${#fields.hasErrors('adress.compagny')}" th:errors="*{adress.compagny}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Champ pour la City -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="ville">City</label>
+                                                <input type="text" id="ville" class="form-control" th:field="*{adress.city}" placeholder="Ville">
+                                                <div th:if="${#fields.hasErrors('adress.city')}" th:errors="*{adress.city}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Champ pour la date de naissance -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="date-naissance">Date de Naissance</label>
+                                                <input type="date" id="date-naissance" class="form-control" th:field="*{dateNaissance}" placeholder="Date de Naissance">
+                                                <div th:if="${#fields.hasErrors('dateNaissance')}" th:errors="*{dateNaissance}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                        <!-- Champ pour le matricule -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="matricule">Matricule</label>
+                                                <input type="text" id="matricule" class="form-control" th:field="*{matricule}" placeholder="Matricule">
+                                                <div th:if="${#fields.hasErrors('matricule')}" th:errors="*{matricule}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- Champ pour la sélection de la classe -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="classeType">Classe</label>
+                                                <select id="classeType" th:field="*{classeType}" class="form-control">
+                                                    <option value="" disabled>Sélectionner une classe</option>
+                                                    <option th:each="classe : ${typesClasse}" th:value="${classe}" th:text="${classe.classeName}">Classe</option>
+                                                </select>
+                                                <div th:if="${#fields.hasErrors('classeType')}" th:errors="*{classeType}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+                                        <!-- Champ pour le téléphone -->
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="telephone">Téléphone</label>
+                                                <input type="text" id="telephone" class="form-control" th:field="*{telephone}" placeholder="Téléphone">
+                                                <div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Boutons d'action agrandis, écartés, et centrés -->
+                                        <div class="col-12 d-flex justify-content-center mt-4">
+                                            <button type="reset" class="btn btn-light-secondary mr-4" style="width: 150px;">Annuler</button>
+                                            <button type="submit" class="btn btn-primary ml-4" style="width: 150px;">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+</div>
+</body>
+</html>

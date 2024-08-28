@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+<head>
+    <meta charset="UTF-8">
+    <title>Users page</title>
+</head>
+<body>
+
+<div class="main-content container-fluid" layout:fragment="content">
+
+
+    <div class="main-content container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Utilisateur
+                        (<span th:text="${users.size}"></span>)
+                        <i data-feather="user" width="50"></i>
+                    </h3>
+                    <p class="text-subtitle text-muted">
+                        Cette page affiche la liste des utilisateurs avec leurs informations essentielles, telles que le pseudo et la date de création.
+                    </p>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/users/add}" class="d-flex align-items-center">
+                                    <i data-feather="plus" class="icon-circle" width="35"></i>
+                                    <button type="submit" class="btn btn-primary btn-lg ml-2">Nouvel utilisateur</button>
+                                </a>
+                            </li>
+                        </ol>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    Simple Datatable
+                </div>
+                <div class="card-body">
+                    <table class='table table-striped' id="tableUser">
+                        <thead>
+                        <tr>
+                            <th>Nom d'utilisateur</th>
+                            <th>Date de création</th>
+                            <th>Ville</th>
+                            <th>Rue</th>
+                            <th>Compagny</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.pseudo}"></td>
+                            <td th:text="${#dates.format(user.creationDate , 'd/MMMM/YYYY')}"></td>
+                            <td th:text="${user.address != null ? user.address.city : 'Non défini'}"></td>
+                            <td th:text="${user.address != null ? user.address.street : 'Non défini'}"></td>
+                            <td th:text="${user.address != null ? user.address.compagny : 'Non défini'}"></td>
+                            <td>
+                                <a class="btn btn-info btn-sm" data-bs-toggle="modal" th:data-bs-target="'#detailModal' + ${user.id}">Détail</a>
+                                <a th:href="@{/users/update/{id}(id=${user.id})}" class="btn btn-warning btn-sm">Modifier</a>
+                                <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">Supprimer</a>                            </td>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal pour les détails des professeurs -->
+        <th:block th:each="user : ${users}">
+            <div th:id="'detailModal' + ${user.id}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailModalLabel">Détails de l'élève</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>pseudo:</strong> <span th:text="${user.pseudo}"></span></p>
+                            <p><strong>Date de creation:</strong> <span th:text="${user.creationDate}"></span></p>
+
+                            <p><strong>Ville:</strong> <span th:text="${user.address != null ? user.address.city : 'Non défini'}"></span></p>
+                            <p><strong>Rue:</strong> <span th:text="${user.address != null ? user.address.street : 'Non défini'}"></span></p>
+                            <p><strong>Compagnie:</strong> <span th:text="${user.address != null ? user.address.compagny : 'Non défini'}"></span></p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+        <script>
+            function confirmDelete(event, button) {
+                event.preventDefault();
+                var row = button.closest('tr');
+                var name = row.querySelector('td').textContent;
+                if (confirm('Voulez-vous supprimer cet user ' + name + ' ?')) {
+                    window.location.href = button.href;
+                } else {
+                    console.log('Suppression annulée');
+                }
+            }
+        </script>
+
+        <!-- Assurez-vous d'inclure Bootstrap JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="sidebar" class='active' th:fragment="sidebar"><!--sidebar-->
+    <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+            <img th:src="@{/images/logo.png}" alt="" srcset="" width="100px" style="width: 150px; height: auto;display: block;margin: 0 auto; /">
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu">
+
+
+                 <hr style="width: 80%; border: 1px solid #ccc; margin: 20px auto 10px">
+
+
+                <li class="sidebar-item active ">
+                    <a th:href="@{/home}" class='sidebar-link'>
+                        <i data-feather="grid" width="25" ></i>
+                        <span>Tableau de bord</span>
+                    </a>
+
+                </li>
+
+
+
+                <li class="sidebar-item  ">
+                    <a th:href="@{/students}" class='sidebar-link'>
+                        <i> <img th:src="@{/images/eleves.png}" width="25" ></i>
+                        <span>Eleves</span>
+                    </a>
+
+                </li>
+
+
+                <li class="sidebar-item  ">
+                    <a th:href="@{/teachers}" class='sidebar-link'>
+                        <i> <img th:src="@{/images/professeur.png}" width="25" ></i>
+                        <span>Professeurs</span>
+                    </a>
+
+                </li>
+
+
+                <li class="sidebar-item  ">
+                    <a th:href="@{/users}" class='sidebar-link'>
+                        <i data-feather="user" width="25"></i>
+                        <span>Utilisateurs</span>
+                    </a>
+
+                </li>
+
+
+                <li class="sidebar-item  ">
+                    <a th:href="@{/reports}" class='sidebar-link'>
+                        <i> <img th:src="@{/images/rapport.png}" width="25" ></i>
+                        <span>Rapport</span>
+                    </a>
+
+                </li>
+
+                <div style="padding-top: 100px">
+                    <hr style="width: 80%; border: 1px solid #ccc; margin: 20px auto 10px">
+
+                </div>
+
+
+
+
+
+                <li class="sidebar-item  "style="padding-top: 10px">
+                    <a th:href="@{/}" class='sidebar-link'>
+                        <i data-feather="log-out" width="20" ></i>
+                        <span>Déconnexion</span>
+                    </a>
+
+                </li>
+
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>
+</div>
+</body>
+</html>
