@@ -4,6 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Students page</title>
+
+    <style>
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+    </style>
 </head>
 <body>
 
@@ -11,10 +25,17 @@
 
     <div class="main-content container-fluid">
         <div class="page-title">
+
             <div class="row">
+
+                <!-- Afficher le message de succès s'il existe -->
+                <div th:if="${successMessage}" id="success-message" class="alert alert-success">
+                    <p th:text="${successMessage}" style="font-size: 20px; font-weight: bold"></p>
+                </div>
+
                 <div class="col-12 col-md-6 order-md-1 order-last">
                     <h3>Elève
-                        (<span th:text="${students.size}"></span>)
+<!--                        (<span th:text="${students.size}"></span>)-->
                         <i> <img th:src="@{/images/eleves.png}" width="50" ></i>
                     </h3>
                     <p class="text-subtitle text-muted">
@@ -48,13 +69,12 @@
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Telephone</th>
-                            <th>City</th>
+                            <th>Ville</th>
                             <th>Genre</th>
                             <th>Classe</th>
-                            <th>street</th>
-                            <th>compagny</th>
+                            <th>Rue</th>
+                            <th>Compagnie</th>
                             <th>Actions</th>
-
                         </tr>
                         </thead>
                         <tbody>
@@ -62,16 +82,15 @@
                             <td th:text="${eleve.nom}"></td>
                             <td th:text="${eleve.prenom}"></td>
                             <td th:text="${eleve.telephone}"></td>
-                            <td th:text="${eleve.adress != null ? eleve.adress.city : 'Non défini'}"></td>
+                            <td th:text="${eleve.address != null ? eleve.address.city : 'Non défini'}"></td>
                             <td th:text="${eleve.genre}"></td>
                             <td th:text="${eleve.classeType}"></td>
-                            <td th:text="${eleve.adress != null ? eleve.adress.street : 'Non défini'}"></td>
-                            <td th:text="${eleve.adress != null ? eleve.adress.compagny : 'Non défini'}"></td>
-
+                            <td th:text="${eleve.address != null ? eleve.address.street : 'Non défini'}"></td>
+                            <td th:text="${eleve.address != null ? eleve.address.compagny : 'Non défini'}"></td>
                             <td>
                                 <a class="btn btn-info btn-sm" data-bs-toggle="modal" th:data-bs-target="'#detailModal' + ${eleve.id}">Détail</a>
                                 <a th:href="@{/students/update/{id}(id=${eleve.id})}" class="btn btn-warning btn-sm">Modifier</a>
-                                <a th:href="@{/students/delete/{id}(id=${eleve.id})}" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">Supprimer</a>                            </td>
+                                <a th:href="@{/students/delete/{id}(id=${eleve.id})}" class="btn btn-danger btn-sm" onclick="confirmDelete(event, this)">Supprimer</a>
                             </td>
                         </tr>
                         </tbody>
@@ -93,9 +112,9 @@
                             <p><strong>Nom:</strong> <span th:text="${eleve.nom}"></span></p>
                             <p><strong>Prénom:</strong> <span th:text="${eleve.prenom}"></span></p>
                             <p><strong>Telephone:</strong> <span th:text="${eleve.telephone}"></span></p>
-                            <p><strong>Ville:</strong> <span th:text="${eleve.adress != null ? eleve.adress.city : 'Non défini'}"></span></p>
-                            <p><strong>Rue:</strong> <span th:text="${eleve.adress != null ? eleve.adress.street : 'Non défini'}"></span></p>
-                            <p><strong>Compagnie:</strong> <span th:text="${eleve.adress != null ? eleve.adress.compagny : 'Non défini'}"></span></p>
+                            <p><strong>Ville:</strong> <span th:text="${eleve.address != null ? eleve.address.city : 'Non défini'}"></span></p>
+                            <p><strong>Rue:</strong> <span th:text="${eleve.address != null ? eleve.address.street : 'Non défini'}"></span></p>
+                            <p><strong>Compagnie:</strong> <span th:text="${eleve.address != null ? eleve.address.compagny : 'Non défini'}"></span></p>
                             <p><strong>Genre:</strong> <span th:text="${eleve.genre}"></span></p>
                             <p><strong>Classe:</strong> <span th:text="${eleve.classeType}"></span></p>
                             <p><strong>Date de Naissance:</strong> <span th:text="${#dates.format(eleve.dateNaissance, 'dd-MM-yyyy')}"></span></p>
@@ -119,6 +138,22 @@
                     console.log('Suppression annulée');
                 }
             }
+        </script>
+
+        <!-- JavaScript pour masquer le message après un certain temps -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successMessage = document.getElementById("success-message");
+                if (successMessage) {
+                    // Masquer le message après 5 secondes (5000 millisecondes)
+                    setTimeout(function() {
+                        successMessage.style.opacity = 0;
+                        setTimeout(function() {
+                            successMessage.style.display = 'none';
+                        }, 500); // Attendre que l'animation de fondu soit terminée
+                    }, 3000);
+                }
+            });
         </script>
 
         <!-- Assurez-vous d'inclure Bootstrap JavaScript -->

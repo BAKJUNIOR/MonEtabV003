@@ -2,6 +2,7 @@ package ci.digitalacademy.monetab;
 
 
 import ci.digitalacademy.monetab.models.*;
+import ci.digitalacademy.monetab.repositories.StudentRepository;
 import ci.digitalacademy.monetab.services.*;
 import ci.digitalacademy.monetab.services.dto.AddressDTO;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class MonEtabApplication implements CommandLineRunner {
     private TeacherService teacherService;
 
     private AddressService addressService;
+    private StudentRepository studentRepository;
 
 
     public static void main(String[] args) {
@@ -38,25 +40,25 @@ public class MonEtabApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-
-        /****************************************************************
-                      Start Gestion des Students
-         ****************************************************************/
-
-        AddressDTO addressStudent1 = new AddressDTO();
-        addressStudent1.setCity("Abidjan");
-        addressStudent1.setCompagny("Atos");
-        addressStudent1.setStreet("Rue 17");
-        addressService.save(addressStudent1 );
-
-        AddressDTO addressStudent2 = new AddressDTO();
-        addressStudent2.setCity("Isia");
-        addressStudent2.setCompagny("Isia compagny");
-        addressStudent2.setStreet("Rue 25");
-        addressService.save(addressStudent2);
-
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//
+//
+//        /****************************************************************
+//                      Start Gestion des Students
+//         ****************************************************************/
+//
+//        AddressDTO addressStudent1 = new AddressDTO();
+//        addressStudent1.setCity("Abidjan");
+//        addressStudent1.setCompagny("Atos");
+//        addressStudent1.setStreet("Rue 17");
+//        addressService.save(addressStudent1 );
+//
+//        AddressDTO addressStudent2 = new AddressDTO();
+//        addressStudent2.setCity("Isia");
+//        addressStudent2.setCompagny("Isia compagny");
+//        addressStudent2.setStreet("Rue 25");
+//        addressService.save(addressStudent2);
+//
 //        Student student1 = new Student();
 //        student1.setMatricule("AUHGF-KK");
 //        student1.setClasseType(ClasseType.CINQUIEME);
@@ -64,7 +66,7 @@ public class MonEtabApplication implements CommandLineRunner {
 //        student1.setPrenom("Koffi");
 //        student1.setGenre("masculin");
 //        student1.setTelephone("0150496532");
-//
+////
 //        try {
 //            // Convertir la chaîne de caractères en un objet Date en utilisant le format
 //            Date dateNaissance = formatter.parse("26/08/1994"); // Format DD/MM/YYYY
@@ -198,7 +200,7 @@ public class MonEtabApplication implements CommandLineRunner {
 //        userService.save(user2);
 //
 
-
+        System.out.println(studentRepository.findAll());
 
     }
 }

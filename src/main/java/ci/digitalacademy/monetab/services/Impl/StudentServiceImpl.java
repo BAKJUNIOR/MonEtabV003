@@ -1,9 +1,11 @@
 package ci.digitalacademy.monetab.services.Impl;
 
+import ci.digitalacademy.monetab.models.ClasseType;
 import ci.digitalacademy.monetab.models.Student;
 import ci.digitalacademy.monetab.repositories.StudentRepository;
 import ci.digitalacademy.monetab.services.StudentService;
-import jakarta.persistence.EntityNotFoundException;
+import ci.digitalacademy.monetab.services.dto.StudentDTO;
+import ci.digitalacademy.monetab.services.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,40 +19,47 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
+
     @Override
-    public Student save(Student student) {
-        return studentRepository.save(student);
+    public StudentDTO save(StudentDTO studentDTO) {
+        log.debug("Request to save Student : {}", studentDTO);
+        Student student = studentMapper.toEntity(studentDTO);
+        student = studentRepository.save(student);
+        return studentMapper.toDto(student);
     }
 
     @Override
-    public Student update(Student student) {
-        log.debug("Requête pour mettre à jour l'étudiant {}", student);
-        return findOne(student.getId())
+    public Optional<StudentDTO> findOne(Long id) {
+        return studentRepository.findById(id)
+                .map(studentMapper::toDto);
+    }
+
+    @Override
+    public StudentDTO update(StudentDTO studentDTO) {
+        return findOne(studentDTO.getId())
                 .map(existingStudent -> {
-                    existingStudent.setClasseType(student.getClasseType());
-                    existingStudent.setMatricule(student.getMatricule());
+                    existingStudent.setNom( studentDTO.getNom());
+                    existingStudent.setPrenom(studentDTO.getPrenom());
+                    existingStudent.setTelephone(studentDTO.getTelephone());
+                    existingStudent.setGenre(studentDTO.getGenre());
+                    existingStudent.setDateNaissance(studentDTO.getDateNaissance());
+                    existingStudent.setClasseType(String.valueOf(ClasseType.valueOf(studentDTO.getClasseType())));
+                    existingStudent.setMatricule(studentDTO.getMatricule());
                     return save(existingStudent);
                 })
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("L'étudiant avec cet id n'a pas été retrouvé " + student.getId()));
+                .orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + studentDTO.getId()));
     }
 
     @Override
-    public Optional<Student> findOne(Long id) {
-        log.debug("Requête pour trouver un étudiant {}", id);
-        return studentRepository.findById(id);
-    }
-
-    @Override
-    public List<Student> findAll() {
-        log.debug("Requête pour trouver tous les étudiants");
-        return studentRepository.findAll();
+    public List<StudentDTO> findAll() {
+        return studentRepository.findAll().stream()
+                .map(studentMapper::toDto)
+                .toList();
     }
 
     @Override
     public void delete(Long id) {
-        log.debug("Requête pour supprimer un étudiant {}", id);
         studentRepository.deleteById(id);
     }
-
 }

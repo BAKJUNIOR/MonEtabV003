@@ -42,8 +42,13 @@
                             <div class="card-body">
 
 
-                                <form th:action="@{/students/student}"
-                                      th:object="${student}" method="post">
+                                <form th:action="@{/students/student}"  th:object="${student}" method="post">
+
+                                    <input th:field="*{id}" hidden type="text">
+
+
+                                    <input th:text="${student.id}" hidden type="text"  >
+
                                     <div class="row">
                                         <!-- Champ pour le prénom -->
                                         <div class="col-md-6 col-12">
@@ -84,8 +89,8 @@
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="street">street</label>
-                                                <input type="text" id="street" class="form-control" th:field="*{adress.street}" placeholder="street">
-                                                <div th:if="${#fields.hasErrors('adress.street')}" th:errors="*{adress.street}" class="text-danger"></div>
+                                                <input type="text" id="street" class="form-control" th:field="*{address.street}" placeholder="street">
+                                                <div th:if="${#fields.hasErrors('address.street')}" th:errors="*{address.street}" class="text-danger"></div>
                                             </div>
                                         </div>
 
@@ -93,8 +98,8 @@
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="compagny">compagny</label>
-                                                <input type="text" id="compagny" class="form-control" th:field="*{adress.compagny}" placeholder="compagny">
-                                                <div th:if="${#fields.hasErrors('adress.compagny')}" th:errors="*{adress.compagny}" class="text-danger"></div>
+                                                <input type="text" id="compagny" class="form-control" th:field="*{address.compagny}" placeholder="compagny">
+                                                <div th:if="${#fields.hasErrors('address.compagny')}" th:errors="*{address.compagny}" class="text-danger"></div>
                                             </div>
                                         </div>
 
@@ -102,8 +107,8 @@
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="ville">City</label>
-                                                <input type="text" id="ville" class="form-control" th:field="*{adress.city}" placeholder="Ville">
-                                                <div th:if="${#fields.hasErrors('adress.city')}" th:errors="*{adress.city}" class="text-danger"></div>
+                                                <input type="text" id="ville" class="form-control" th:field="*{address.city}" placeholder="Ville">
+                                                <div th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}" class="text-danger"></div>
                                             </div>
                                         </div>
 

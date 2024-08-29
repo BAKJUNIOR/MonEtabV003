@@ -1,22 +1,16 @@
 package ci.digitalacademy.monetab.services.dto;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
+
 @Getter
 @Setter
-public class AddressDTO {
+public class StudentDTO extends PersonneDTO {
 
-    private Long id;
-
-    private String compagny;
-
-    private String city;
-
-    private String street;
-
+    private String classeType;
+    private String matricule;
 
 }

@@ -1,3 +1,5 @@
+
+/**
 package ci.digitalacademy.monetab.models.test;
 
 import jakarta.persistence.*;
@@ -19,3 +21,4 @@ public class RendezVous {
     private Patient patient;
 
 }
+ */

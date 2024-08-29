@@ -1,14 +1,19 @@
 package ci.digitalacademy.monetab.controller;
 
-import ci.digitalacademy.monetab.models.*;
+import ci.digitalacademy.monetab.models.Address;
+import ci.digitalacademy.monetab.models.Matiere;
 import ci.digitalacademy.monetab.services.AddressService;
 import ci.digitalacademy.monetab.services.TeacherService;
+import ci.digitalacademy.monetab.services.dto.AddressDTO;
+import ci.digitalacademy.monetab.services.dto.TeacherDTO;
+import ci.digitalacademy.monetab.services.mapper.AddressMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,68 +25,68 @@ public class TeacherController {
 
     private final TeacherService teacherService;
     private final AddressService addressService;
-    @RequestMapping
-    public String showTeacherPage(Model model ) {
-        List<Teacher> teachers = teacherService.findAll();
-        model.addAttribute("teachers",teachers);
+
+    @GetMapping
+    public String showTeacherPage(Model model) {
+        List<TeacherDTO> teachers = teacherService.findAll();
+        model.addAttribute("teachers", teachers);
         return "teacher/list";
     }
-    @RequestMapping("add")
-    public String showAddStudentPage(Model model) {
-        model.addAttribute("teacher", new Teacher());
+
+    @GetMapping("add")
+    public String showAddTeacherPage(Model model) {
+        model.addAttribute("teacher", new TeacherDTO());
         model.addAttribute("matiere", Matiere.values());
         return "teacher/forms";
     }
 
     @PostMapping("/teacher")
-    public String showSaveStudent(@Valid @ModelAttribute("teacher") Teacher teacher , BindingResult bindingResult , Model model ){
-        if(bindingResult.hasErrors()){
-            model.addAttribute("matiere", Matiere.values());
+    public String saveTeacher(@Valid @ModelAttribute("teacher") TeacherDTO teacherDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("matieres", Matiere.values());
             return "teacher/forms";
         }
-//
-//        if (teacher.getAdress() != null) {
-//            Address address = teacher.getAdress();
-//            addressService.save(address);
-//            teacher.setAdress(address);
-//        }
 
-        teacherService.save(teacher);
+        // Gérer l'adresse
+        if (teacherDTO.getAddress() != null) {
+            Address address = AddressMapper.toEntity(teacherDTO.getAddress());
+            AddressDTO savedAddressDTO = addressService.save(AddressMapper.toDto(address));
+            teacherDTO.setAddress(savedAddressDTO);
+        }
+
+        teacherService.save(teacherDTO);
+        redirectAttributes.addFlashAttribute("successMessage", "L'enseignant a été enregistré avec succès !");
         return "redirect:/teachers";
-
     }
 
     @GetMapping("/update/{id}")
-    public String showUpdateStudentPage(@PathVariable Long id, Model model){
-        Optional<Teacher> teacher = teacherService.findOne(id);
-        if (teacher.isPresent()){
-            model.addAttribute("matiere",  Matiere.values());
-            model.addAttribute("teacher",teacher.get());
+    public String showUpdateTeacherPage(@PathVariable Long id, Model model) {
+        Optional<TeacherDTO> teacherDTO = teacherService.findOne(id);
+        if (teacherDTO.isPresent()) {
+            model.addAttribute("teacher", teacherDTO.get());
+            model.addAttribute("matieres", Matiere.values());
             return "teacher/forms";
-        }else {
-            return  "redirect:/teachers";
-
+        } else {
+            return "redirect:/teachers";
         }
-
     }
-
 
     @PostMapping("/teacher/update/{id}")
-    public String showUpdateStudent(@PathVariable Long id, @Valid @ModelAttribute("teacher") Teacher teacher, BindingResult bindingResult, Model model) {
+    public String updateTeacher(@PathVariable Long id, @Valid @ModelAttribute("teacher") TeacherDTO teacherDTO, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("matiere",  Matiere.values());
+            model.addAttribute("matieres", Matiere.values());
             return "teacher/forms";
         }
-        teacherService.save(teacher);
-        return "redirect:/students";
-    }
 
-
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id, Model model) {
-        teacherService.delete(id);
+        teacherService.update(teacherDTO);
+        redirectAttributes.addFlashAttribute("successMessage", "L'enseignant a été mis à jour avec succès !");
         return "redirect:/teachers";
     }
 
-
+    @GetMapping("/delete/{id}")
+    public String deleteTeacher(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        teacherService.delete(id);
+        redirectAttributes.addFlashAttribute("successMessage", "L'enseignant a été supprimé avec succès !");
+        return "redirect:/teachers";
+    }
 }

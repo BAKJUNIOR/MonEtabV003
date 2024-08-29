@@ -1,3 +1,4 @@
+/**
 package ci.digitalacademy.monetab.models.test;
 
 import jakarta.persistence.GeneratedValue;
@@ -22,3 +23,4 @@ public class Consultation {
 
 
 }
+*/
